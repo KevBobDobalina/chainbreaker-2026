@@ -250,7 +250,7 @@ function TrailMapWithLegend() {
     <>
       <svg viewBox="0 0 780 280" className="w-full h-auto" aria-label="Trail map showing three ride routes">
         {/* Compass rose — centered above Herndon */}
-        <g transform="translate(350, 32)">
+        <g transform="translate(350, 38)">
           {/* Cross lines */}
           <line x1="0" y1="-20" x2="0" y2="20" stroke="#4a4a4a" strokeWidth="1.5" />
           <line x1="-20" y1="0" x2="20" y2="0" stroke="#4a4a4a" strokeWidth="1.5" />
@@ -352,8 +352,23 @@ function TrailMapWithLegend() {
           <text x="50" y="100" textAnchor="middle" fill="#60a5fa" fontSize="10" fontWeight="bold">
             PURCELLVILLE
           </text>
-          <text x="50" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-            50mi / 100mi
+        </motion.g>
+        {/* Purcellville turnaround — knight */}
+        <motion.g
+          animate={{ opacity: active.knight ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <text x="50" y="148" textAnchor="middle" fill="#60a5fa" fontSize="8" fontWeight="bold">
+            W&amp;OD Western Terminus
+          </text>
+        </motion.g>
+        {/* Purcellville turnaround — legend */}
+        <motion.g
+          animate={{ opacity: active.legend && !active.knight ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <text x="50" y="148" textAnchor="middle" fill="#f59e0b" fontSize="8" fontWeight="bold">
+            W&amp;OD Western Terminus
           </text>
         </motion.g>
 
@@ -366,8 +381,14 @@ function TrailMapWithLegend() {
           <text x="185" y="100" textAnchor="middle" fill="#4ade80" fontSize="10" fontWeight="bold">
             LEESBURG
           </text>
-          <text x="185" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-            30mi turn
+        </motion.g>
+        {/* Leesburg turnaround — squire */}
+        <motion.g
+          animate={{ opacity: active.squire ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <text x="185" y="148" textAnchor="middle" fill="#4ade80" fontSize="8" fontWeight="bold">
+            Foxridge Park
           </text>
         </motion.g>
 
