@@ -11,6 +11,7 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     { href: "/routes", label: "The Quests" },
     { href: "/riders", label: "The Riders" },
+    { href: "/charity", label: "The Cause" },
     { href: "/rsvp", label: "Join the Ride" },
   ];
 
