@@ -6,6 +6,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
+  const metalManiaFont = await fetch(
+    "https://fonts.gstatic.com/s/metalmania/v22/RWmMoKWb4e8kqMfBUdPFJeXCg6UKDXlq.ttf"
+  ).then((res) => res.arrayBuffer());
+
   return new ImageResponse(
     (
       <div
@@ -17,7 +21,7 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "sans-serif",
+          fontFamily: "Metal Mania",
         }}
       >
         {/* Top decorative line */}
@@ -34,40 +38,42 @@ export default async function Image() {
         {/* Chain */}
         <div
           style={{
-            fontSize: 120,
-            fontWeight: 900,
+            fontSize: 140,
+            fontWeight: 400,
             color: "#ff4d5e",
             lineHeight: 1,
             letterSpacing: "0.05em",
             display: "flex",
           }}
         >
-          CHAIN
+          Chain
         </div>
 
         {/* Breaker */}
         <div
           style={{
-            fontSize: 120,
-            fontWeight: 900,
+            fontSize: 140,
+            fontWeight: 400,
             background: "linear-gradient(180deg, #ffd700, #c9a84c, #8b6914)",
             backgroundClip: "text",
             color: "transparent",
             lineHeight: 1,
             letterSpacing: "0.08em",
-            marginTop: -10,
+            marginTop: -15,
             display: "flex",
           }}
         >
-          BREAKER
+          Breaker
         </div>
 
         {/* 2026 */}
         <div
           style={{
-            fontSize: 48,
-            fontWeight: 700,
-            color: "#c9a84c",
+            fontSize: 56,
+            fontWeight: 400,
+            background: "linear-gradient(180deg, #ffd700, #c9a84c, #8b6914)",
+            backgroundClip: "text",
+            color: "transparent",
             marginTop: 10,
             letterSpacing: "0.2em",
             display: "flex",
@@ -114,6 +120,16 @@ export default async function Image() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Metal Mania",
+          data: metalManiaFont,
+          style: "normal",
+          weight: 400,
+        },
+      ],
+    }
   );
 }
