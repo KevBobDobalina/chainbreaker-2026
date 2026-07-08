@@ -53,6 +53,7 @@ export default function RoutesPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-5xl sm:text-6xl font-black text-parchment tracking-wider"
+          style={{ fontFamily: "var(--font-medieval)" }}
         >
           Choose Your Quest
         </motion.h1>

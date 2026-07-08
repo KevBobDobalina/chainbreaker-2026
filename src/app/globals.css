@@ -5,6 +5,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-medieval: var(--font-medieval);
 
   --color-ember: #d4451a;
   --color-ember-glow: #ff6b35;
