@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import EmberParticles from "@/components/EmberParticles";
 
@@ -84,20 +85,7 @@ export default function RoutesPage() {
           <h2 className="text-xl font-bold text-gold mb-6 tracking-wider text-center">
             The W&OD Trail — Your Battleground
           </h2>
-          <TrailMap />
-          <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm">
-            {routes.map((r) => (
-              <div key={r.name} className="flex items-center gap-2">
-                <div
-                  className="w-4 h-1 rounded"
-                  style={{ backgroundColor: r.color }}
-                />
-                <span className="text-chainmail">
-                  {r.name} — {r.miles}mi
-                </span>
-              </div>
-            ))}
-          </div>
+          <TrailMapWithLegend />
         </motion.div>
       </section>
 
@@ -206,232 +194,208 @@ export default function RoutesPage() {
   );
 }
 
-function TrailMap() {
-  // Layout: Geographic schematic — West (left) ←→ East (right)
-  // Purcellville(50,120) — Leesburg(185,120) — HERNDON(350,120) — Alexandria(620,120)
-  // Southern spur from Alexandria: Downtown Alex(660,180)
-  // Squire (30mi): Herndon ←→ Leesburg
-  // Knight (50mi): Herndon ←→ Purcellville
-  // Legend (100mi): Herndon → Alexandria → Downtown Alex → back → Purcellville → Herndon
+function TrailMapWithLegend() {
+  const [active, setActive] = useState<Record<string, boolean>>({
+    squire: true,
+    knight: true,
+    legend: true,
+  });
+
+  const toggle = (key: string) =>
+    setActive((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const routeOpacity = (key: string) => (active[key] ? 1 : 0);
 
   return (
-    <svg viewBox="0 0 780 220" className="w-full h-auto" aria-label="Trail map showing three ride routes">
-      {/* Compass rose */}
-      <text x="40" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">W</text>
-      <text x="100" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">E</text>
-      <line x1="52" y1="27" x2="96" y2="27" stroke="#4a4a4a" strokeWidth="1" markerEnd="url(#arrowE)" />
-      <defs>
-        <marker id="arrowE" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-          <path d="M0,0 L6,2 L0,4" fill="#4a4a4a" />
-        </marker>
-      </defs>
+    <>
+      <svg viewBox="0 0 780 220" className="w-full h-auto" aria-label="Trail map showing three ride routes">
+        {/* Compass rose */}
+        <text x="40" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">W</text>
+        <text x="100" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">E</text>
+        <line x1="52" y1="27" x2="96" y2="27" stroke="#4a4a4a" strokeWidth="1" markerEnd="url(#arrowE)" />
+        <defs>
+          <marker id="arrowE" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+            <path d="M0,0 L6,2 L0,4" fill="#4a4a4a" />
+          </marker>
+        </defs>
 
-      {/* ===== W&OD TRAIL (main horizontal line) ===== */}
-      <line x1="50" y1="120" x2="620" y2="120" stroke="#2a2a2a" strokeWidth="8" strokeLinecap="round" />
-      {/* Trail label banner — wide background */}
-      <rect x="160" y="95" width="220" height="18" rx="3" fill="#1a1a2e" stroke="#2a2a2a" strokeWidth="1" />
-      <text x="270" y="108" textAnchor="middle" fill="#6b6b6b" fontSize="9" letterSpacing="4" fontWeight="bold">
-        W&amp;OD TRAIL &bull; HERNDON VA
-      </text>
-
-      {/* ===== Southern spur: Alexandria → Downtown Alex ===== */}
-      <path d="M620,120 Q650,120 660,150 L660,180"
-        stroke="#2a2a2a" strokeWidth="6" fill="none" strokeLinecap="round" />
-      <text x="680" y="155" fill="#4a4a4a" fontSize="8" transform="rotate(70,680,155)">
-        Four Mile Run Trail
-      </text>
-
-      {/* ===== 30mi SQUIRE ROUTE (green): Herndon ←→ Leesburg ===== */}
-      <motion.path
-        d="M350,120 L185,120"
-        stroke="#4ade80"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.2 }}
-        opacity={0.85}
-      />
-
-      {/* ===== 50mi KNIGHT ROUTE (blue): Herndon ←→ Purcellville ===== */}
-      <motion.path
-        d="M350,120 L50,120"
-        stroke="#60a5fa"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, delay: 0.5 }}
-        opacity={0.65}
-      />
-
-      {/* ===== 100mi LEGEND ROUTE (gold): Complex path ===== */}
-      {/* Leg 1: Herndon → Alexandria (east on W&OD) */}
-      <motion.path
-        d="M350,115 L620,115"
-        stroke="#f59e0b"
-        strokeWidth="4"
-        strokeLinecap="round"
-        fill="none"
-        strokeDasharray="8 4"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.8 }}
-        opacity={0.7}
-      />
-      {/* Leg 2: Alexandria → Downtown Alex (south) */}
-      <motion.path
-        d="M620,115 Q648,115 658,148 L658,178"
-        stroke="#f59e0b"
-        strokeWidth="4"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray="8 4"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 1.8 }}
-        opacity={0.7}
-      />
-      {/* Leg 3: Downtown Alex → back north to Alexandria → west all the way to Purcellville */}
-      <motion.path
-        d="M658,178 Q648,150 620,125 L50,125"
-        stroke="#f59e0b"
-        strokeWidth="4"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray="8 4"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, delay: 2.4 }}
-        opacity={0.7}
-      />
-      {/* Leg 4: Purcellville → back east to Herndon */}
-      <motion.path
-        d="M50,125 L350,125"
-        stroke="#f59e0b"
-        strokeWidth="4"
-        strokeLinecap="round"
-        fill="none"
-        strokeDasharray="8 4"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 3.9 }}
-        opacity={0.7}
-      />
-
-      {/* ===== STOP MARKERS ===== */}
-
-      {/* Purcellville (westernmost) */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.8, type: "spring" }}
-      >
-        <circle cx="50" cy="120" r="8" fill="#60a5fa" stroke="#60a5fa50" strokeWidth="2" />
-        <text x="50" y="100" textAnchor="middle" fill="#60a5fa" fontSize="10" fontWeight="bold">
-          PURCELLVILLE
+        {/* ===== W&OD TRAIL (main horizontal line) ===== */}
+        <line x1="50" y1="120" x2="620" y2="120" stroke="#2a2a2a" strokeWidth="8" strokeLinecap="round" />
+        {/* Trail label banner */}
+        <rect x="160" y="95" width="220" height="18" rx="3" fill="#1a1a2e" stroke="#2a2a2a" strokeWidth="1" />
+        <text x="270" y="108" textAnchor="middle" fill="#6b6b6b" fontSize="9" letterSpacing="4" fontWeight="bold">
+          W&amp;OD TRAIL &bull; HERNDON VA
         </text>
-        <text x="50" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-          50mi / 100mi
-        </text>
-      </motion.g>
 
-      {/* Leesburg / Foxridge Park (Squire turnaround) */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.2, type: "spring" }}
-      >
-        <circle cx="185" cy="120" r="8" fill="#4ade80" stroke="#4ade8050" strokeWidth="2" />
-        <text x="185" y="100" textAnchor="middle" fill="#4ade80" fontSize="10" fontWeight="bold">
-          LEESBURG
+        {/* Southern spur */}
+        <path d="M620,120 Q650,120 660,150 L660,180"
+          stroke="#2a2a2a" strokeWidth="6" fill="none" strokeLinecap="round" />
+        <text x="680" y="155" fill="#4a4a4a" fontSize="8" transform="rotate(70,680,155)">
+          Four Mile Run Trail
         </text>
-        <text x="185" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-          30mi turn
-        </text>
-      </motion.g>
 
-      {/* HERNDON (start) */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1, type: "spring" }}
-      >
-        <circle cx="350" cy="120" r="14" fill="#d4451a" stroke="#ff6b35" strokeWidth="2" />
-        <text x="350" y="96" textAnchor="middle" fill="#d4c5a0" fontSize="12" fontWeight="bold">
-          HERNDON
-        </text>
-        <text x="350" y="152" textAnchor="middle" fill="#ff6b35" fontSize="9" fontWeight="bold">
-          START / FINISH
-        </text>
-      </motion.g>
+        {/* ===== 30mi SQUIRE (green) ===== */}
+        <motion.path
+          d="M350,120 L185,120"
+          stroke="#4ade80" strokeWidth="5" strokeLinecap="round" fill="none"
+          animate={{ opacity: active.squire ? 0.85 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
 
-      {/* Alexandria (W&OD eastern terminus) */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 2, type: "spring" }}
-      >
-        <circle cx="620" cy="120" r="8" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
-        <text x="620" y="100" textAnchor="middle" fill="#f59e0b" fontSize="10" fontWeight="bold">
-          ALEXANDRIA
-        </text>
-        <text x="620" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-          W&amp;OD Terminus
-        </text>
-      </motion.g>
+        {/* ===== 50mi KNIGHT (blue) ===== */}
+        <motion.path
+          d="M350,120 L50,120"
+          stroke="#60a5fa" strokeWidth="5" strokeLinecap="round" fill="none"
+          animate={{ opacity: active.knight ? 0.65 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
 
-      {/* Downtown Alexandria */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 2.5, type: "spring" }}
-      >
-        <circle cx="660" cy="180" r="7" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
-        <text x="720" y="178" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
-          DOWNTOWN
-        </text>
-        <text x="720" y="188" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
-          ALEXANDRIA
-        </text>
-        <text x="720" y="200" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-          100mi turn
-        </text>
-      </motion.g>
+        {/* ===== 100mi LEGEND (gold) ===== */}
+        <motion.path
+          d="M350,115 L620,115"
+          stroke="#f59e0b" strokeWidth="4" strokeLinecap="round" fill="none" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+        <motion.path
+          d="M620,115 Q648,115 658,148 L658,178"
+          stroke="#f59e0b" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+        <motion.path
+          d="M658,178 Q648,150 620,125 L50,125"
+          stroke="#f59e0b" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+        <motion.path
+          d="M50,125 L350,125"
+          stroke="#f59e0b" strokeWidth="4" strokeLinecap="round" fill="none" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
 
-      {/* Direction labels */}
-      <motion.text
-        x="530" y="110" fill="#f59e0b" fontSize="10" opacity={0.6}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.6 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.5 }}
-      >
-        → east
-      </motion.text>
-      <motion.text
-        x="180" y="138" fill="#f59e0b" fontSize="10" opacity={0.6}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.6 }}
-        viewport={{ once: true }}
-        transition={{ delay: 3 }}
-      >
-        ← west to Purcellville
-      </motion.text>
-    </svg>
+        {/* ===== STOP MARKERS ===== */}
+
+        {/* Purcellville — visible for knight or legend */}
+        <motion.g
+          animate={{ opacity: active.knight || active.legend ? 1 : 0.15 }}
+          transition={{ duration: 0.4 }}
+        >
+          <circle cx="50" cy="120" r="8" fill="#60a5fa" stroke="#60a5fa50" strokeWidth="2" />
+          <text x="50" y="100" textAnchor="middle" fill="#60a5fa" fontSize="10" fontWeight="bold">
+            PURCELLVILLE
+          </text>
+          <text x="50" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
+            50mi / 100mi
+          </text>
+        </motion.g>
+
+        {/* Leesburg — visible for squire */}
+        <motion.g
+          animate={{ opacity: active.squire ? 1 : 0.15 }}
+          transition={{ duration: 0.4 }}
+        >
+          <circle cx="185" cy="120" r="8" fill="#4ade80" stroke="#4ade8050" strokeWidth="2" />
+          <text x="185" y="100" textAnchor="middle" fill="#4ade80" fontSize="10" fontWeight="bold">
+            LEESBURG
+          </text>
+          <text x="185" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
+            30mi turn
+          </text>
+        </motion.g>
+
+        {/* HERNDON — always visible */}
+        <g>
+          <circle cx="350" cy="120" r="14" fill="#d4451a" stroke="#ff6b35" strokeWidth="2" />
+          <text x="350" y="96" textAnchor="middle" fill="#d4c5a0" fontSize="12" fontWeight="bold">
+            HERNDON
+          </text>
+          <text x="350" y="152" textAnchor="middle" fill="#ff6b35" fontSize="9" fontWeight="bold">
+            START / FINISH
+          </text>
+        </g>
+
+        {/* Alexandria — visible for legend */}
+        <motion.g
+          animate={{ opacity: active.legend ? 1 : 0.15 }}
+          transition={{ duration: 0.4 }}
+        >
+          <circle cx="620" cy="120" r="8" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
+          <text x="620" y="100" textAnchor="middle" fill="#f59e0b" fontSize="10" fontWeight="bold">
+            ALEXANDRIA
+          </text>
+          <text x="620" y="145" textAnchor="middle" fill="#6b6b6b" fontSize="8">
+            W&amp;OD Terminus
+          </text>
+        </motion.g>
+
+        {/* Downtown Alexandria — visible for legend */}
+        <motion.g
+          animate={{ opacity: active.legend ? 1 : 0.15 }}
+          transition={{ duration: 0.4 }}
+        >
+          <circle cx="660" cy="180" r="7" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
+          <text x="720" y="178" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
+            DOWNTOWN
+          </text>
+          <text x="720" y="188" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
+            ALEXANDRIA
+          </text>
+          <text x="720" y="200" textAnchor="middle" fill="#6b6b6b" fontSize="8">
+            100mi turn
+          </text>
+        </motion.g>
+
+        {/* Direction labels — visible for legend */}
+        <motion.text
+          x="530" y="110" fill="#f59e0b" fontSize="10"
+          animate={{ opacity: active.legend ? 0.6 : 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          → east
+        </motion.text>
+        <motion.text
+          x="180" y="138" fill="#f59e0b" fontSize="10"
+          animate={{ opacity: active.legend ? 0.6 : 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          ← west to Purcellville
+        </motion.text>
+      </svg>
+
+      {/* Clickable legend */}
+      <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm">
+        {routes.map((r) => {
+          const key = r.name === "The Squire" ? "squire" : r.name === "The Knight" ? "knight" : "legend";
+          const isActive = active[key];
+          return (
+            <button
+              key={r.name}
+              onClick={() => toggle(key)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: isActive ? r.color : "#333",
+                backgroundColor: isActive ? `${r.color}15` : "transparent",
+                opacity: isActive ? 1 : 0.4,
+              }}
+            >
+              <div
+                className="w-4 h-1 rounded transition-colors duration-300"
+                style={{ backgroundColor: isActive ? r.color : "#555" }}
+              />
+              <span
+                className="transition-colors duration-300"
+                style={{ color: isActive ? r.color : "#666" }}
+              >
+                {r.name} — {r.miles}mi
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
