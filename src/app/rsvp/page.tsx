@@ -43,7 +43,7 @@ export default function RSVPPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
+        throw new Error(data.details || data.error || "Something went wrong");
       }
 
       setStatus("success");
