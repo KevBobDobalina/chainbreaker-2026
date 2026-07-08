@@ -22,7 +22,22 @@ const metalMania = Metal_Mania({
 export const metadata: Metadata = {
   title: "Chainbreaker 2026 | Forged in Iron, Riding for a Cause",
   description:
-    "A charity bike ride on the W&OD Trail starting from Herndon, Virginia. Choose your quest: 30, 60, or 100 miles. All proceeds go to charity.",
+    "A charity bike ride on the W&OD Trail starting from Herndon, Virginia. Choose your quest: 30, 50, or 100 miles. All proceeds go to charity.",
+  metadataBase: new URL("https://chainbreaker2026.fit"),
+  openGraph: {
+    title: "Chainbreaker 2026",
+    description:
+      "Break chains. Ride for cause. A charity bike ride on the W&OD Trail — Sept 12, 2026.",
+    url: "https://chainbreaker2026.fit",
+    siteName: "Chainbreaker 2026",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chainbreaker 2026",
+    description:
+      "Break chains. Ride for cause. A charity bike ride on the W&OD Trail — Sept 12, 2026.",
+  },
 };
 
 export default function RootLayout({
