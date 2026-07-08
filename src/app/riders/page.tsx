@@ -1,17 +1,43 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const riders = [
-  { name: "Sir Kevin", quest: "The Legend", miles: "100mi", pledge: "$250", cry: "Break every chain!" },
-  { name: "Lady Swift", quest: "The Knight", miles: "50mi", pledge: "$100", cry: "Ride or die!" },
-  { name: "Squire Dan", quest: "The Squire", miles: "30mi", pledge: "$50", cry: "First ride, no mercy!" },
-  { name: "Iron Mike", quest: "The Legend", miles: "100mi", pledge: "$500", cry: "Forged in fire!" },
-  { name: "Dame Ava", quest: "The Knight", miles: "50mi", pledge: "$75", cry: "Pedals of justice!" },
-];
+const questMap: Record<string, { label: string; miles: string }> = {
+  "100": { label: "The Legend", miles: "100mi" },
+  "50": { label: "The Knight", miles: "50mi" },
+  "30": { label: "The Squire", miles: "30mi" },
+  feast: { label: "Only Feasting", miles: "" },
+};
+
+type Rider = {
+  id: string;
+  name: string;
+  route: string;
+  donation_amount: number;
+  message: string | null;
+  created_at: string;
+};
 
 export default function RidersPage() {
+  const [riders, setRiders] = useState<Rider[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/rsvp")
+      .then((res) => res.json())
+      .then((data) => {
+        setRiders(data.rsvps || []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to summon the riders.");
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="relative min-h-screen metal-gradient pt-24 pb-16 px-4">
       <div className="max-w-5xl mx-auto">
@@ -37,34 +63,53 @@ export default function RidersPage() {
           transition={{ delay: 0.2 }}
           className="parchment-card rounded-lg overflow-hidden"
         >
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-steel/30">
-                  <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Name</th>
-                  <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Quest</th>
-                  <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Pledge</th>
-                  <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Battle Cry</th>
-                </tr>
-              </thead>
-              <tbody>
-                {riders.map((rider, i) => (
-                  <tr
-                    key={rider.name}
-                    className={`border-b border-steel/20 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
-                  >
-                    <td className="px-6 py-4 text-parchment font-semibold">{rider.name}</td>
-                    <td className="px-6 py-4">
-                      <span className="text-ember-glow font-bold text-sm">{rider.quest}</span>
-                      <span className="text-steel text-xs ml-2">({rider.miles})</span>
-                    </td>
-                    <td className="px-6 py-4 text-gold font-bold">{rider.pledge}</td>
-                    <td className="px-6 py-4 text-chainmail italic text-sm">&ldquo;{rider.cry}&rdquo;</td>
+          {loading ? (
+            <div className="p-12 text-center text-chainmail">
+              Summoning the riders...
+            </div>
+          ) : error ? (
+            <div className="p-12 text-center text-red-400">{error}</div>
+          ) : riders.length === 0 ? (
+            <div className="p-12 text-center text-chainmail">
+              No riders have pledged yet. Be the first to answer the call.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-steel/30">
+                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Name</th>
+                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Quest</th>
+                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Pledge</th>
+                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Battle Cry</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {riders.map((rider, i) => {
+                    const quest = questMap[rider.route] || { label: rider.route, miles: "" };
+                    return (
+                      <tr
+                        key={rider.id}
+                        className={`border-b border-steel/20 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
+                      >
+                        <td className="px-6 py-4 text-parchment font-semibold">{rider.name}</td>
+                        <td className="px-6 py-4">
+                          <span className="text-ember-glow font-bold text-sm">{quest.label}</span>
+                          {quest.miles && <span className="text-steel text-xs ml-2">({quest.miles})</span>}
+                        </td>
+                        <td className="px-6 py-4 text-gold font-bold">
+                          {rider.donation_amount > 0 ? `$${rider.donation_amount}` : "—"}
+                        </td>
+                        <td className="px-6 py-4 text-chainmail italic text-sm">
+                          {rider.message ? <>&ldquo;{rider.message}&rdquo;</> : "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </motion.div>
 
         <motion.div

@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!["30", "60", "100"].includes(route)) {
+    if (!["30", "50", "100", "feast"].includes(route)) {
       return Response.json(
         { error: "Invalid route selection" },
         { status: 400 }
@@ -72,8 +72,9 @@ export async function GET() {
     total_donations: data.reduce((sum, r) => sum + (r.donation_amount || 0), 0),
     by_route: {
       "30": data.filter((r) => r.route === "30").length,
-      "60": data.filter((r) => r.route === "60").length,
+      "50": data.filter((r) => r.route === "50").length,
       "100": data.filter((r) => r.route === "100").length,
+      "feast": data.filter((r) => r.route === "feast").length,
     },
   };
 
