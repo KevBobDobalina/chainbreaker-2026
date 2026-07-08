@@ -315,29 +315,36 @@ function TrailMapWithLegend() {
         {/* Leg 1: Herndon → Alexandria (east) */}
         <motion.path
           d="M350,113 L620,113"
-          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none"
+          animate={{ opacity: active.legend ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         />
         {/* Leg 2: Alexandria → Downtown Alex (south) */}
         <motion.path
           d="M620,113 Q650,113 660,148 L660,178"
-          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round"
+          animate={{ opacity: active.legend ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         />
-        {/* Leg 3: Downtown Alex → back north → west to Purcellville */}
+        {/* Leg 3a: Downtown Alex → back north → west to Herndon (dotted return) */}
         <motion.path
-          d="M656,178 Q646,150 618,127 L50,127"
-          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.55 : 0 }}
+          d="M656,178 Q646,150 618,124 L350,124"
+          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="6 3"
+          animate={{ opacity: active.legend ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+        {/* Leg 3b: Herndon → west to Purcellville (upper line, dotted) */}
+        <motion.path
+          d="M350,113 L50,113"
+          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="6 3"
+          animate={{ opacity: active.legend ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         />
         {/* Leg 4: Purcellville → back east to Herndon */}
         <motion.path
-          d="M50,131 L350,131"
-          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.4 : 0 }}
+          d="M50,124 L350,124"
+          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none"
+          animate={{ opacity: active.legend ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         />
 
