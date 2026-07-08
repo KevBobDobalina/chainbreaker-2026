@@ -75,7 +75,7 @@ export default function RidersPage() {
                 value: riders.reduce((sum, r) => sum + (parseInt(r.route) || 0), 0).toLocaleString(),
               },
               {
-                label: "Donations Pledged",
+                label: "Money Raised",
                 value: `$${riders.reduce((sum, r) => sum + (r.donation_amount || 0), 0).toLocaleString()}`,
               },
             ].map((stat) => (
