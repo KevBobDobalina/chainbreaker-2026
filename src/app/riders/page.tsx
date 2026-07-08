@@ -71,7 +71,7 @@ export default function RidersPage() {
                 value: riders.length,
               },
               {
-                label: "Miles Pledged",
+                label: "Miles",
                 value: riders.reduce((sum, r) => sum + (parseInt(r.route) || 0), 0).toLocaleString(),
               },
               {
