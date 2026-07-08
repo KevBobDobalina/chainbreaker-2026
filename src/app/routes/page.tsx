@@ -33,8 +33,8 @@ const routes = [
     color: "#f59e0b",
     description:
       "Only the mightiest dare attempt The Legend. 100 miles of pure conquest. From Herndon, ride east to the W&OD terminus in Alexandria, continue via the Four Mile Run Trail to downtown Alexandria, then retrace north and ride the full W&OD west to Purcellville before returning to Herndon.",
-    terrain: "Full W&OD Trail + Four Mile Run Trail + Mt. Vernon Trail, all paved",
-    turnaround: "Old Town Alexandria → Purcellville",
+    terrain: "Full W&OD Trail + Four Mile Run Trail, all paved",
+    turnaround: "Downtown Alexandria → Purcellville",
     elevation: "~1,500 ft gain",
     badge: "Crown",
   },
@@ -208,14 +208,14 @@ export default function RoutesPage() {
 
 function TrailMap() {
   // Layout: Geographic schematic — West (left) ←→ East (right)
-  // Purcellville(50,120) — Leesburg(185,120) — HERNDON(350,120) — Falls Church(490,120) — Alexandria(620,120)
-  // Southern spur from Alexandria: Downtown Alex(660,180) — Mt. Vernon(700,240)
-  // Squire (30mi): Herndon ←→ Falls Church (Banneker Park)
+  // Purcellville(50,120) — Leesburg(185,120) — HERNDON(350,120) — Alexandria(620,120)
+  // Southern spur from Alexandria: Downtown Alex(660,180)
+  // Squire (30mi): Herndon ←→ Leesburg
   // Knight (50mi): Herndon ←→ Purcellville
-  // Legend (100mi): Herndon → Alexandria → Mt. Vernon → back → Purcellville → Herndon
+  // Legend (100mi): Herndon → Alexandria → Downtown Alex → back → Purcellville → Herndon
 
   return (
-    <svg viewBox="0 0 780 300" className="w-full h-auto" aria-label="Trail map showing three ride routes">
+    <svg viewBox="0 0 780 220" className="w-full h-auto" aria-label="Trail map showing three ride routes">
       {/* Compass rose */}
       <text x="40" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">W</text>
       <text x="100" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">E</text>
@@ -228,16 +228,17 @@ function TrailMap() {
 
       {/* ===== W&OD TRAIL (main horizontal line) ===== */}
       <line x1="50" y1="120" x2="620" y2="120" stroke="#2a2a2a" strokeWidth="8" strokeLinecap="round" />
-      {/* Trail label */}
-      <text x="270" y="108" textAnchor="middle" fill="#4a4a4a" fontSize="9" letterSpacing="3">
-        W&amp;OD TRAIL
+      {/* Trail label banner — wide background */}
+      <rect x="160" y="95" width="220" height="18" rx="3" fill="#1a1a2e" stroke="#2a2a2a" strokeWidth="1" />
+      <text x="270" y="108" textAnchor="middle" fill="#6b6b6b" fontSize="9" letterSpacing="4" fontWeight="bold">
+        W&amp;OD TRAIL &bull; HERNDON VA
       </text>
 
-      {/* ===== Southern spur: Alexandria → Downtown Alex → Mt. Vernon ===== */}
-      <path d="M620,120 Q650,120 660,150 L660,180 Q660,210 680,225 L700,240"
+      {/* ===== Southern spur: Alexandria → Downtown Alex ===== */}
+      <path d="M620,120 Q650,120 660,150 L660,180"
         stroke="#2a2a2a" strokeWidth="6" fill="none" strokeLinecap="round" />
-      <text x="685" y="160" fill="#4a4a4a" fontSize="8" transform="rotate(70,685,160)">
-        4 Mile Run / Mt. Vernon Trail
+      <text x="680" y="155" fill="#4a4a4a" fontSize="8" transform="rotate(70,680,155)">
+        Four Mile Run Trail
       </text>
 
       {/* ===== 30mi SQUIRE ROUTE (green): Herndon ←→ Leesburg ===== */}
@@ -280,9 +281,9 @@ function TrailMap() {
         transition={{ duration: 1, delay: 0.8 }}
         opacity={0.7}
       />
-      {/* Leg 2: Alexandria → Downtown Alex → Mt. Vernon (south) */}
+      {/* Leg 2: Alexandria → Downtown Alex (south) */}
       <motion.path
-        d="M620,115 Q648,115 658,148 L658,178 Q658,208 678,223 L698,238"
+        d="M620,115 Q648,115 658,148 L658,178"
         stroke="#f59e0b"
         strokeWidth="4"
         fill="none"
@@ -291,12 +292,12 @@ function TrailMap() {
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 1.8 }}
+        transition={{ duration: 0.6, delay: 1.8 }}
         opacity={0.7}
       />
-      {/* Leg 3: Mt. Vernon → back north to Alexandria → west all the way to Purcellville */}
+      {/* Leg 3: Downtown Alex → back north to Alexandria → west all the way to Purcellville */}
       <motion.path
-        d="M698,238 L658,178 Q648,150 620,125 L50,125"
+        d="M658,178 Q648,150 620,125 L50,125"
         stroke="#f59e0b"
         strokeWidth="4"
         fill="none"
@@ -305,7 +306,7 @@ function TrailMap() {
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.5, delay: 2.6 }}
+        transition={{ duration: 1.5, delay: 2.4 }}
         opacity={0.7}
       />
       {/* Leg 4: Purcellville → back east to Herndon */}
@@ -318,7 +319,7 @@ function TrailMap() {
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 4.1 }}
+        transition={{ duration: 1, delay: 3.9 }}
         opacity={0.7}
       />
 
@@ -395,28 +396,15 @@ function TrailMap() {
         viewport={{ once: true }}
         transition={{ delay: 2.5, type: "spring" }}
       >
-        <circle cx="660" cy="180" r="6" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
-        <text x="720" y="183" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
+        <circle cx="660" cy="180" r="7" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
+        <text x="720" y="178" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
           DOWNTOWN
         </text>
-        <text x="720" y="193" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
+        <text x="720" y="188" textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
           ALEXANDRIA
         </text>
-      </motion.g>
-
-      {/* Mt. Vernon */}
-      <motion.g
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 3, type: "spring" }}
-      >
-        <circle cx="700" cy="240" r="8" fill="#f59e0b" stroke="#f59e0b50" strokeWidth="2" />
-        <text x="700" y="263" textAnchor="middle" fill="#f59e0b" fontSize="10" fontWeight="bold">
-          MT. VERNON
-        </text>
-        <text x="700" y="275" textAnchor="middle" fill="#6b6b6b" fontSize="8">
-          100mi waypoint
+        <text x="720" y="200" textAnchor="middle" fill="#6b6b6b" fontSize="8">
+          100mi turn
         </text>
       </motion.g>
 
@@ -435,7 +423,7 @@ function TrailMap() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 0.6 }}
         viewport={{ once: true }}
-        transition={{ delay: 3.5 }}
+        transition={{ delay: 3 }}
       >
         ← west to Purcellville
       </motion.text>

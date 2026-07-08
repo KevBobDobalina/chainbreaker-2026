@@ -8,6 +8,7 @@ const routeOptions = [
   { value: "30", label: "The Squire — 30 Miles", color: "#4ade80" },
   { value: "50", label: "The Knight — 50 Miles", color: "#60a5fa" },
   { value: "100", label: "The Legend — 100 Miles", color: "#f59e0b" },
+  { value: "feast", label: "Feast Only — No Ride", color: "#d4c5a0" },
 ];
 
 const suggestedDonations = [25, 50, 100, 250];
@@ -145,7 +146,7 @@ export default function RSVPPage() {
                 <label className="block text-sm font-semibold text-parchment tracking-wider uppercase mb-3">
                   Choose Your Quest
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {routeOptions.map((opt) => (
                     <button
                       key={opt.value}
@@ -168,10 +169,10 @@ export default function RSVPPage() {
                             form.route === opt.value ? opt.color : "#6b6b6b",
                         }}
                       >
-                        {opt.value}
+                        {opt.value === "feast" ? "🍺" : opt.value}
                       </p>
                       <p className="text-xs text-chainmail mt-1 tracking-wider uppercase">
-                        Miles
+                        {opt.value === "feast" ? "Only Feasting" : "Miles"}
                       </p>
                     </button>
                   ))}

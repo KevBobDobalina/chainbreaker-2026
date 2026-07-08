@@ -6,7 +6,7 @@ CREATE TABLE rsvps (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
-  route TEXT NOT NULL CHECK (route IN ('30', '60', '100')),
+  route TEXT NOT NULL CHECK (route IN ('30', '50', '100', 'feast')),
   donation_amount NUMERIC(10, 2) DEFAULT 0,
   message TEXT,
   created_at TIMESTAMPTZ DEFAULT now()

@@ -62,10 +62,10 @@ export default function Home() {
               className="fire-text leading-none font-black absolute inset-0 select-none"
               style={{ fontFamily: "var(--font-medieval)" }}
             >
-              <span className="block text-8xl sm:text-9xl md:text-[10rem] tracking-wide text-[#ff4d5e]">
+              <span className="block text-[5.5rem] sm:text-9xl md:text-[10rem] tracking-wide text-[#ff4d5e]">
                 Chain
               </span>
-              <span className="block text-8xl sm:text-9xl md:text-[10rem] tracking-wider -mt-2 sm:-mt-4 text-[#c9a84c]">
+              <span className="block text-[5.5rem] sm:text-9xl md:text-[10rem] tracking-wider -mt-2 sm:-mt-4 text-[#c9a84c]">
                 Breaker
               </span>
             </h1>
@@ -74,10 +74,10 @@ export default function Home() {
               className="relative leading-none font-black"
               style={{ fontFamily: "var(--font-medieval)" }}
             >
-              <span className="block text-8xl sm:text-9xl md:text-[10rem] text-[#ff4d5e] tracking-wide">
+              <span className="block text-[5.5rem] sm:text-9xl md:text-[10rem] text-[#ff4d5e] tracking-wide">
                 Chain
               </span>
-              <span className="block text-8xl sm:text-9xl md:text-[10rem] metal-text tracking-wider -mt-2 sm:-mt-4">
+              <span className="block text-[5.5rem] sm:text-9xl md:text-[10rem] metal-text tracking-wider -mt-2 sm:-mt-4">
                 Breaker
               </span>
             </h1>
