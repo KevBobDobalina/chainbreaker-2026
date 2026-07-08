@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     if (error) {
       console.error("Supabase error:", error);
       return Response.json(
-        { error: "Failed to save RSVP" },
+        { error: "Failed to save RSVP", details: error.message },
         { status: 500 }
       );
     }
