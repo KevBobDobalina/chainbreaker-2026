@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import EmberParticles from "@/components/EmberParticles";
@@ -196,19 +196,58 @@ export default function RoutesPage() {
 
 function TrailMapWithLegend() {
   const [active, setActive] = useState<Record<string, boolean>>({
-    squire: true,
-    knight: true,
-    legend: true,
+    squire: false,
+    knight: false,
+    legend: false,
   });
+  const [autoPlay, setAutoPlay] = useState(true);
+  const autoPlayRef = useRef(true);
+  const stepRef = useRef(0);
 
-  const toggle = (key: string) =>
+  const stopAutoPlay = useCallback(() => {
+    autoPlayRef.current = false;
+    setAutoPlay(false);
+  }, []);
+
+  // Auto-highlight sequence: squire → knight → legend
+  useEffect(() => {
+    if (!autoPlay) return;
+
+    const sequence = [
+      { squire: true, knight: false, legend: false },
+      { squire: true, knight: true, legend: false },
+      { squire: true, knight: true, legend: true },
+      { squire: false, knight: false, legend: false },
+    ];
+
+    // Start with first step after a short delay
+    const initialTimeout = setTimeout(() => {
+      if (!autoPlayRef.current) return;
+      setActive(sequence[0]);
+      stepRef.current = 1;
+    }, 500);
+
+    const interval = setInterval(() => {
+      if (!autoPlayRef.current) return;
+      const step = stepRef.current % sequence.length;
+      setActive(sequence[step]);
+      stepRef.current = step + 1;
+    }, 1500);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [autoPlay]);
+
+  const toggle = (key: string) => {
+    stopAutoPlay();
     setActive((prev) => ({ ...prev, [key]: !prev[key] }));
-
-  const routeOpacity = (key: string) => (active[key] ? 1 : 0);
+  };
 
   return (
     <>
-      <svg viewBox="0 0 780 220" className="w-full h-auto" aria-label="Trail map showing three ride routes">
+      <svg viewBox="0 0 780 280" className="w-full h-auto" aria-label="Trail map showing three ride routes">
         {/* Compass rose */}
         <text x="40" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">W</text>
         <text x="100" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">E</text>
@@ -234,45 +273,67 @@ function TrailMapWithLegend() {
           Four Mile Run Trail
         </text>
 
-        {/* ===== 30mi SQUIRE (green) ===== */}
+        {/* ===== 30mi SQUIRE (green) — out & back ===== */}
+        {/* Out: Herndon → Leesburg */}
         <motion.path
-          d="M350,120 L185,120"
-          stroke="#4ade80" strokeWidth="5" strokeLinecap="round" fill="none"
+          d="M350,118 L185,118"
+          stroke="#4ade80" strokeWidth="4" strokeLinecap="round" fill="none"
           animate={{ opacity: active.squire ? 0.85 : 0 }}
           transition={{ duration: 0.4 }}
         />
-
-        {/* ===== 50mi KNIGHT (blue) ===== */}
+        {/* Back: Leesburg → Herndon */}
         <motion.path
-          d="M350,120 L50,120"
-          stroke="#60a5fa" strokeWidth="5" strokeLinecap="round" fill="none"
-          animate={{ opacity: active.knight ? 0.65 : 0 }}
+          d="M185,122 L350,122"
+          stroke="#4ade80" strokeWidth="4" strokeLinecap="round" fill="none"
+          strokeDasharray="6 3"
+          animate={{ opacity: active.squire ? 0.6 : 0 }}
           transition={{ duration: 0.4 }}
         />
 
-        {/* ===== 100mi LEGEND (gold) ===== */}
+        {/* ===== 50mi KNIGHT (blue) — out & back ===== */}
+        {/* Out: Herndon → Purcellville */}
         <motion.path
-          d="M350,115 L620,115"
-          stroke="#f59e0b" strokeWidth="4" strokeLinecap="round" fill="none" strokeDasharray="8 4"
+          d="M350,116 L50,116"
+          stroke="#60a5fa" strokeWidth="4" strokeLinecap="round" fill="none"
+          animate={{ opacity: active.knight ? 0.7 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+        {/* Back: Purcellville → Herndon */}
+        <motion.path
+          d="M50,124 L350,124"
+          stroke="#60a5fa" strokeWidth="4" strokeLinecap="round" fill="none"
+          strokeDasharray="6 3"
+          animate={{ opacity: active.knight ? 0.45 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
+
+        {/* ===== 100mi LEGEND (gold) — full route ===== */}
+        {/* Leg 1: Herndon → Alexandria (east) */}
+        <motion.path
+          d="M350,113 L620,113"
+          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none" strokeDasharray="8 4"
           animate={{ opacity: active.legend ? 0.7 : 0 }}
           transition={{ duration: 0.4 }}
         />
+        {/* Leg 2: Alexandria → Downtown Alex (south) */}
         <motion.path
-          d="M620,115 Q648,115 658,148 L658,178"
-          stroke="#f59e0b" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="8 4"
+          d="M620,113 Q650,113 660,148 L660,178"
+          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="8 4"
           animate={{ opacity: active.legend ? 0.7 : 0 }}
           transition={{ duration: 0.4 }}
         />
+        {/* Leg 3: Downtown Alex → back north → west to Purcellville */}
         <motion.path
-          d="M658,178 Q648,150 620,125 L50,125"
-          stroke="#f59e0b" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          d="M656,178 Q646,150 618,127 L50,127"
+          stroke="#f59e0b" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.55 : 0 }}
           transition={{ duration: 0.4 }}
         />
+        {/* Leg 4: Purcellville → back east to Herndon */}
         <motion.path
-          d="M50,125 L350,125"
-          stroke="#f59e0b" strokeWidth="4" strokeLinecap="round" fill="none" strokeDasharray="8 4"
-          animate={{ opacity: active.legend ? 0.7 : 0 }}
+          d="M50,131 L350,131"
+          stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" fill="none" strokeDasharray="8 4"
+          animate={{ opacity: active.legend ? 0.4 : 0 }}
           transition={{ duration: 0.4 }}
         />
 
@@ -350,14 +411,14 @@ function TrailMapWithLegend() {
 
         {/* Direction labels — visible for legend */}
         <motion.text
-          x="530" y="110" fill="#f59e0b" fontSize="10"
+          x="530" y="108" fill="#f59e0b" fontSize="10"
           animate={{ opacity: active.legend ? 0.6 : 0 }}
           transition={{ duration: 0.4 }}
         >
           → east
         </motion.text>
         <motion.text
-          x="180" y="138" fill="#f59e0b" fontSize="10"
+          x="180" y="142" fill="#f59e0b" fontSize="10"
           animate={{ opacity: active.legend ? 0.6 : 0 }}
           transition={{ duration: 0.4 }}
         >
