@@ -52,7 +52,7 @@ export default function RoutesPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl sm:text-6xl font-black text-parchment tracking-wider"
+          className="text-5xl sm:text-7xl font-black mb-4 metal-text"
           style={{ fontFamily: "var(--font-medieval)" }}
         >
           Choose Your Quest
@@ -249,23 +249,26 @@ function TrailMapWithLegend() {
   return (
     <>
       <svg viewBox="0 0 780 280" className="w-full h-auto" aria-label="Trail map showing three ride routes">
-        {/* Compass rose */}
-        <text x="40" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">W</text>
-        <text x="100" y="30" fill="#4a4a4a" fontSize="10" fontWeight="bold">E</text>
-        <line x1="52" y1="27" x2="96" y2="27" stroke="#4a4a4a" strokeWidth="1" markerEnd="url(#arrowE)" />
-        <defs>
-          <marker id="arrowE" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-            <path d="M0,0 L6,2 L0,4" fill="#4a4a4a" />
-          </marker>
-        </defs>
+        {/* Compass rose — centered above Herndon */}
+        <g transform="translate(350, 32)">
+          {/* Cross lines */}
+          <line x1="0" y1="-20" x2="0" y2="20" stroke="#4a4a4a" strokeWidth="1.5" />
+          <line x1="-20" y1="0" x2="20" y2="0" stroke="#4a4a4a" strokeWidth="1.5" />
+          {/* Diagonal ticks */}
+          <line x1="-10" y1="-10" x2="10" y2="10" stroke="#3a3a3a" strokeWidth="0.8" />
+          <line x1="10" y1="-10" x2="-10" y2="10" stroke="#3a3a3a" strokeWidth="0.8" />
+          {/* Diamond center */}
+          <path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="#4a4a4a" opacity="0.6" />
+          {/* Cardinal labels */}
+          <text x="0" y="-26" textAnchor="middle" fill="#6b6b6b" fontSize="12" fontWeight="bold">N</text>
+          <text x="0" y="34" textAnchor="middle" fill="#6b6b6b" fontSize="12" fontWeight="bold">S</text>
+          <text x="30" y="4" textAnchor="start" fill="#6b6b6b" fontSize="12" fontWeight="bold">E</text>
+          <text x="-30" y="4" textAnchor="end" fill="#6b6b6b" fontSize="12" fontWeight="bold">W</text>
+        </g>
 
         {/* ===== W&OD TRAIL (main horizontal line) ===== */}
         <line x1="50" y1="120" x2="620" y2="120" stroke="#2a2a2a" strokeWidth="8" strokeLinecap="round" />
-        {/* Trail label banner */}
-        <rect x="160" y="95" width="220" height="18" rx="3" fill="#1a1a2e" stroke="#2a2a2a" strokeWidth="1" />
-        <text x="270" y="108" textAnchor="middle" fill="#6b6b6b" fontSize="9" letterSpacing="4" fontWeight="bold">
-          W&amp;OD TRAIL &bull; HERNDON VA
-        </text>
+        {/* Trail label banner removed for clarity */}
 
         {/* Southern spur */}
         <path d="M620,120 Q650,120 660,150 L660,180"

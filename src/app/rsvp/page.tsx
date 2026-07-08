@@ -65,7 +65,7 @@ export default function RSVPPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl sm:text-6xl font-black text-parchment tracking-wider" style={{ fontFamily: "var(--font-medieval)" }}>
+          <h1 className="text-5xl sm:text-7xl font-black mb-4 metal-text" style={{ fontFamily: "var(--font-medieval)" }}>
             Join the Ride
           </h1>
           <p className="text-chainmail mt-4">
