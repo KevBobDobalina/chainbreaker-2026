@@ -67,7 +67,7 @@ export default function RidersPage() {
           >
             {[
               {
-                label: "Riders",
+                label: "Riders & Wayfarers",
                 value: riders.length,
               },
               {
