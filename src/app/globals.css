@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-ember: #d4451a;
+  --color-ember-glow: #ff6b35;
+  --color-forge: #1a0a00;
+  --color-iron: #2a2a2a;
+  --color-steel: #7a7a7a;
+  --color-chainmail: #9e9e9e;
+  --color-parchment: #d4c5a0;
+  --color-gold: #c9a84c;
+  --color-gold-bright: #ffd700;
+  --color-blood: #8b0000;
+  --color-rune: #7b68ee;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Medieval scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1a0a00;
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 2px;
+  border: 1px solid #2a2a2a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b6b6b;
+}
+
+/* Flickering fire glow animation */
+@keyframes fireGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px #d4451a) drop-shadow(0 0 30px #ff6b35) drop-shadow(0 0 60px #ff6b3580); }
+  25% { filter: drop-shadow(0 0 15px #d4451a) drop-shadow(0 0 40px #ff6b35) drop-shadow(0 0 80px #ff6b3580); }
+  50% { filter: drop-shadow(0 0 8px #d4451a) drop-shadow(0 0 25px #ff6b35) drop-shadow(0 0 50px #ff6b3560); }
+  75% { filter: drop-shadow(0 0 12px #d4451a) drop-shadow(0 0 35px #ff6b35) drop-shadow(0 0 70px #ff6b3580); }
+}
+
+
+@keyframes chainRattle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(-1deg); }
+  75% { transform: rotate(0.5deg); }
+}
+
+@keyframes runeGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes ember {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-100px) scale(0); opacity: 0; }
+}
+
+.fire-text {
+  animation: fireGlow 3s ease-in-out infinite;
+}
+
+/* Metallic gradient text */
+.metal-text {
+  background: linear-gradient(
+    180deg,
+    #ffd700 0%,
+    #fff1a8 30%,
+    #c9a84c 60%,
+    #8b6914 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.metal-text-ember {
+  background: linear-gradient(
+    180deg,
+    #ff9999 0%,
+    #dc3545 35%,
+    #dc3545 65%,
+    #ff9999 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.chain-rattle {
+  animation: chainRattle 2s ease-in-out infinite;
+}
+
+.rune-glow {
+  animation: runeGlow 3s ease-in-out infinite;
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Metal texture gradient */
+.metal-gradient {
+  background: linear-gradient(
+    180deg,
+    #1a1a2e 0%,
+    #0d0d1a 30%,
+    #1a0a00 60%,
+    #0a0a0a 100%
+  );
+}
+
+/* Forge glow border */
+.forge-border {
+  border: 1px solid #4a4a4a;
+  box-shadow: 0 0 15px rgba(212, 69, 26, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Parchment card style */
+.parchment-card {
+  background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 10, 0, 0.9));
+  border: 1px solid #4a4a4a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 69, 26, 0.1);
 }
