@@ -242,11 +242,12 @@ function TrailMap() {
       </text>
 
       {/* ===== 30mi SQUIRE ROUTE (green): Herndon ←→ Leesburg ===== */}
-      <motion.line
-        x1="350" y1="120" x2="185" y2="120"
+      <motion.path
+        d="M350,120 L185,120"
         stroke="#4ade80"
         strokeWidth="5"
         strokeLinecap="round"
+        fill="none"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
@@ -255,11 +256,12 @@ function TrailMap() {
       />
 
       {/* ===== 50mi KNIGHT ROUTE (blue): Herndon ←→ Purcellville ===== */}
-      <motion.line
-        x1="350" y1="120" x2="50" y2="120"
+      <motion.path
+        d="M350,120 L50,120"
         stroke="#60a5fa"
         strokeWidth="5"
         strokeLinecap="round"
+        fill="none"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
@@ -269,11 +271,12 @@ function TrailMap() {
 
       {/* ===== 100mi LEGEND ROUTE (gold): Complex path ===== */}
       {/* Leg 1: Herndon → Alexandria (east on W&OD) */}
-      <motion.line
-        x1="350" y1="115" x2="620" y2="115"
+      <motion.path
+        d="M350,115 L620,115"
         stroke="#f59e0b"
         strokeWidth="4"
         strokeLinecap="round"
+        fill="none"
         strokeDasharray="8 4"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
@@ -310,11 +313,12 @@ function TrailMap() {
         opacity={0.7}
       />
       {/* Leg 4: Purcellville → back east to Herndon */}
-      <motion.line
-        x1="50" y1="125" x2="350" y2="125"
+      <motion.path
+        d="M50,125 L350,125"
         stroke="#f59e0b"
         strokeWidth="4"
         strokeLinecap="round"
+        fill="none"
         strokeDasharray="8 4"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}

@@ -12,7 +12,7 @@ interface Particle {
   drift: number;
 }
 
-export default function EmberParticles({ count = 50 }: { count?: number }) {
+export default function EmberParticles({ count = 60 }: { count?: number }) {
   const [risingParticles, setRisingParticles] = useState<Particle[]>([]);
   const [fallingParticles, setFallingParticles] = useState<Particle[]>([]);
 
@@ -22,20 +22,20 @@ export default function EmberParticles({ count = 50 }: { count?: number }) {
       Array.from({ length: halfCount }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
-        delay: Math.random() * 4,
-        duration: 3 + Math.random() * 4,
-        size: 3 + Math.random() * 6,
-        drift: (Math.random() - 0.5) * 150,
+        delay: Math.random() * 3,
+        duration: 2.5 + Math.random() * 3.5,
+        size: 3 + Math.random() * 7,
+        drift: (Math.random() - 0.5) * 170,
       }))
     );
     setFallingParticles(
       Array.from({ length: halfCount }, (_, i) => ({
         id: i + halfCount,
         x: Math.random() * 100,
-        delay: Math.random() * 4,
-        duration: 4 + Math.random() * 5,
-        size: 3 + Math.random() * 5,
-        drift: (Math.random() - 0.5) * 120,
+        delay: Math.random() * 3,
+        duration: 3 + Math.random() * 4,
+        size: 3 + Math.random() * 6,
+        drift: (Math.random() - 0.5) * 150,
       }))
     );
   }, [count]);
@@ -43,7 +43,7 @@ export default function EmberParticles({ count = 50 }: { count?: number }) {
   return (
     <>
       {/* Rising embers from bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-[700px] overflow-hidden pointer-events-none z-10">
+      <div className="absolute bottom-0 left-0 right-0 h-[900px] overflow-hidden pointer-events-none z-10">
         {risingParticles.map((p) => (
           <motion.div
             key={`rise-${p.id}`}
@@ -53,14 +53,14 @@ export default function EmberParticles({ count = 50 }: { count?: number }) {
               bottom: 0,
               width: p.size,
               height: p.size,
-              background: `radial-gradient(circle, #ff8c42 0%, #ff6b35 30%, #d4451a 60%, transparent 100%)`,
-              boxShadow: `0 0 ${p.size * 3}px #ff6b35, 0 0 ${p.size * 6}px #d4451a80`,
+              background: `radial-gradient(circle, #ffcc44 0%, #ff8c42 25%, #ff6b35 50%, #d4451a 75%, transparent 100%)`,
+              boxShadow: `0 0 ${p.size * 3}px #ff8c42, 0 0 ${p.size * 6}px #ff6b35aa, 0 0 ${p.size * 9}px #d4451a40`,
             }}
             animate={{
-              y: [0, -500 - Math.random() * 200],
+              y: [0, -600 - Math.random() * 300],
               x: [0, p.drift],
-              opacity: [0, 1, 0.8, 0],
-              scale: [0.6, 1.2, 0.3],
+              opacity: [0, 1, 0.9, 0.6, 0],
+              scale: [0.6, 1.4, 0.8, 0.2],
             }}
             transition={{
               duration: p.duration,
@@ -73,7 +73,7 @@ export default function EmberParticles({ count = 50 }: { count?: number }) {
       </div>
 
       {/* Falling embers from top */}
-      <div className="absolute top-0 left-0 right-0 h-[700px] overflow-hidden pointer-events-none z-10">
+      <div className="absolute top-0 left-0 right-0 h-[900px] overflow-hidden pointer-events-none z-10">
         {fallingParticles.map((p) => (
           <motion.div
             key={`fall-${p.id}`}
@@ -83,14 +83,14 @@ export default function EmberParticles({ count = 50 }: { count?: number }) {
               top: -10,
               width: p.size,
               height: p.size,
-              background: `radial-gradient(circle, #ffb347 0%, #ff6b35 40%, #d4451a 70%, transparent 100%)`,
-              boxShadow: `0 0 ${p.size * 3}px #ff6b35, 0 0 ${p.size * 5}px #d4451a60`,
+              background: `radial-gradient(circle, #ffcc44 0%, #ffb347 25%, #ff6b35 50%, #d4451a 75%, transparent 100%)`,
+              boxShadow: `0 0 ${p.size * 3}px #ffb347, 0 0 ${p.size * 6}px #ff6b35aa, 0 0 ${p.size * 9}px #d4451a40`,
             }}
             animate={{
-              y: [0, 450 + Math.random() * 250],
+              y: [0, 550 + Math.random() * 350],
               x: [0, p.drift],
-              opacity: [0, 0.9, 0.7, 0],
-              scale: [0.5, 1, 0.2],
+              opacity: [0, 1, 0.85, 0.5, 0],
+              scale: [0.5, 1.3, 0.7, 0.15],
             }}
             transition={{
               duration: p.duration,
