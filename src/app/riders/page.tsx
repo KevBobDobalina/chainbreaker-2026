@@ -44,7 +44,7 @@ export default function RidersPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <h1
             className="text-5xl sm:text-7xl font-black mb-4 metal-text"
@@ -63,27 +63,34 @@ export default function RidersPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="grid grid-cols-3 gap-4 sm:gap-8 mb-12"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 mb-6"
           >
-            {[
-              {
-                label: "Riders & Wayfarers",
-                value: riders.length,
-              },
-              {
-                label: "Miles",
-                value: riders.reduce((sum, r) => sum + (parseInt(r.route) || 0), 0).toLocaleString(),
-              },
-              {
-                label: "Money Raised",
-                value: `$${riders.reduce((sum, r) => sum + (r.donation_amount || 0), 0).toLocaleString()}`,
-              },
-            ].map((stat) => (
-              <div key={stat.label} className="parchment-card rounded-lg p-4 sm:p-6 text-center">
-                <p className="text-2xl sm:text-4xl font-black text-gold">{stat.value}</p>
-                <p className="text-xs sm:text-sm text-chainmail uppercase tracking-wider mt-1">{stat.label}</p>
-              </div>
-            ))}
+            {(() => {
+              const totalRaised = riders.reduce((sum, r) => sum + (r.donation_amount || 0), 0);
+              return [
+                {
+                  label: "Riders & Wayfarers",
+                  value: riders.length,
+                },
+                {
+                  label: "Miles",
+                  value: riders.reduce((sum, r) => sum + (parseInt(r.route) || 0), 0).toLocaleString(),
+                },
+                {
+                  label: "Money Raised",
+                  value: `$${totalRaised.toLocaleString()}`,
+                },
+                {
+                  label: "Weekend Adventures Funded",
+                  value: Math.floor(totalRaised / 46),
+                },
+              ].map((stat) => (
+                <div key={stat.label} className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center">
+                  <p className="text-xl sm:text-3xl font-black text-gold">{stat.value}</p>
+                  <p className="text-xs sm:text-sm text-chainmail uppercase tracking-wider mt-1">{stat.label}</p>
+                </div>
+              ));
+            })()}
           </motion.div>
         )}
 
@@ -105,13 +112,13 @@ export default function RidersPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
+              <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-steel/30">
-                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Name</th>
-                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Quest</th>
-                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Pledge</th>
-                    <th className="px-6 py-4 text-gold text-sm font-bold tracking-wider uppercase">Battle Cry</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-gold font-bold tracking-wider uppercase">Name</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-gold font-bold tracking-wider uppercase">Quest</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-gold font-bold tracking-wider uppercase">Pledge</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-gold font-bold tracking-wider uppercase">Battle Cry</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,15 +129,15 @@ export default function RidersPage() {
                         key={rider.id}
                         className={`border-b border-steel/20 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
                       >
-                        <td className="px-6 py-4 text-parchment font-semibold">{rider.name}</td>
-                        <td className="px-6 py-4">
-                          <span className="text-ember-glow font-bold text-sm">{quest.label}</span>
-                          {quest.miles && <span className="text-steel text-xs ml-2">({quest.miles})</span>}
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-parchment font-semibold">{rider.name}</td>
+                        <td className="px-2 sm:px-4 py-2 sm:py-3">
+                          <span className="text-ember-glow font-bold">{quest.label}</span>
+                          {quest.miles && <span className="text-steel text-[10px] sm:text-xs ml-1">({quest.miles})</span>}
                         </td>
-                        <td className="px-6 py-4 text-gold font-bold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-gold font-bold">
                           {rider.donation_amount > 0 ? `$${rider.donation_amount}` : "—"}
                         </td>
-                        <td className="px-6 py-4 text-chainmail italic text-sm">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-chainmail italic">
                           {rider.message ? <>&ldquo;{rider.message}&rdquo;</> : "—"}
                         </td>
                       </tr>
