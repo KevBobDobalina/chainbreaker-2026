@@ -57,6 +57,36 @@ export default function RidersPage() {
           </p>
         </motion.div>
 
+        {/* Summary stats */}
+        {!loading && !error && riders.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="grid grid-cols-3 gap-4 sm:gap-8 mb-12"
+          >
+            {[
+              {
+                label: "Riders",
+                value: riders.length,
+              },
+              {
+                label: "Miles Pledged",
+                value: riders.reduce((sum, r) => sum + (parseInt(r.route) || 0), 0).toLocaleString(),
+              },
+              {
+                label: "Donations Pledged",
+                value: `$${riders.reduce((sum, r) => sum + (r.donation_amount || 0), 0).toLocaleString()}`,
+              },
+            ].map((stat) => (
+              <div key={stat.label} className="parchment-card rounded-lg p-4 sm:p-6 text-center">
+                <p className="text-2xl sm:text-4xl font-black text-gold">{stat.value}</p>
+                <p className="text-xs sm:text-sm text-chainmail uppercase tracking-wider mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
