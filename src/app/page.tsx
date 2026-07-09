@@ -165,29 +165,10 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}
-          className="absolute bottom-8 float-animation"
-        >
-          <svg className="w-6 h-10 text-chainmail" viewBox="0 0 24 40">
-            <rect x="1" y="1" width="22" height="38" rx="11" fill="none" stroke="currentColor" strokeWidth="2" />
-            <motion.circle
-              cx="12"
-              cy="12"
-              r="3"
-              fill="currentColor"
-              animate={{ y: [0, 14, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </svg>
-        </motion.div>
       </section>
 
       {/* Event Details Section */}
-      <section className="relative px-4 py-24 border-t border-steel/30">
+      <section className="relative px-4 py-12">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -205,7 +186,7 @@ export default function Home() {
                 <p className="text-steel text-xs mt-1">Weather delay: Sunday Sept 13</p>
               </div>
               <div>
-                <p className="text-ember-glow text-3xl font-black">Herndon, VA</p>
+                <p className="text-ember-glow text-3xl font-black">Aslin Herndon, VA</p>
                 <p className="text-chainmail mt-2 tracking-wider text-sm uppercase">Starting Point</p>
               </div>
               <div>
