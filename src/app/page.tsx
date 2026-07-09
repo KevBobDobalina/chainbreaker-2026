@@ -187,7 +187,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-ember-glow text-3xl font-black">Aslin Herndon, VA</p>
-                <p className="text-chainmail mt-2 tracking-wider text-sm uppercase">Starting Point</p>
+                <p className="text-chainmail mt-2 tracking-wider text-sm uppercase">Starting and Ending Point</p>
               </div>
               <div>
                 <p className="text-ember-glow text-3xl font-black">W&OD Trail</p>
