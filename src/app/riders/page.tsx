@@ -71,6 +71,7 @@ export default function RidersPage() {
                 {
                   label: "Riders & Wayfarers",
                   value: riders.length,
+                  href: null as string | null,
                 },
                 {
                   label: "Miles",
@@ -83,13 +84,25 @@ export default function RidersPage() {
                 {
                   label: "Weekend Adventures Funded",
                   value: Math.floor(totalRaised / 46),
+                  href: "https://app.theauxilia.com/pay/SupportWildKidsAlxToday",
                 },
-              ].map((stat) => (
-                <div key={stat.label} className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center">
-                  <p className="text-xl sm:text-3xl font-black text-gold">{stat.value}</p>
-                  <p className="text-xs sm:text-sm text-chainmail uppercase tracking-wider mt-1">{stat.label}</p>
-                </div>
-              ));
+              ].map((stat) => {
+                const inner = (
+                  <>
+                    <p className="text-xl sm:text-3xl font-black text-gold">{stat.value}</p>
+                    <p className="text-xs sm:text-sm text-chainmail uppercase tracking-wider mt-1">{stat.label}</p>
+                  </>
+                );
+                return stat.href ? (
+                  <a key={stat.label} href={stat.href} target="_blank" rel="noopener noreferrer" className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center hover:ring-2 hover:ring-gold/50 transition-all [&_p:last-child]:text-blue-300 [&_p:last-child]:underline [&_p:last-child]:decoration-blue-400/50 hover:[&_p:last-child]:text-blue-200">
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={stat.label} className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center">
+                    {inner}
+                  </div>
+                );
+              });
             })()}
           </motion.div>
         )}
