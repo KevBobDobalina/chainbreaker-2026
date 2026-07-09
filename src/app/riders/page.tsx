@@ -94,11 +94,11 @@ export default function RidersPage() {
                   </>
                 );
                 return stat.href ? (
-                  <a key={stat.label} href={stat.href} target="_blank" rel="noopener noreferrer" className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center hover:ring-2 hover:ring-gold/50 transition-all [&_p:last-child]:text-blue-300 [&_p:last-child]:underline [&_p:last-child]:decoration-blue-400/50 hover:[&_p:last-child]:text-blue-200">
+                  <a key={stat.label} href={stat.href} target="_blank" rel="noopener noreferrer" className="w-full parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center flex flex-col items-center justify-center hover:ring-2 hover:ring-gold/50 transition-all [&_p:last-child]:text-blue-300 [&_p:last-child]:underline [&_p:last-child]:decoration-blue-400/50 hover:[&_p:last-child]:text-blue-200">
                     {inner}
                   </a>
                 ) : (
-                  <div key={stat.label} className="parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center">
+                  <div key={stat.label} className="w-full parchment-card rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-center flex flex-col items-center justify-center">
                     {inner}
                   </div>
                 );
